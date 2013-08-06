@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <!-- Name Tag -->
+
+    <TextView
+        android:id="@+id/nametag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <!-- Name Text -->
+
+    <TextView
+        android:id="@+id/nametext"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <!-- Joined Tag -->
+
+    <TextView
+        android:id="@+id/joinedtag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <!-- Joined Text -->
+
+    <TextView
+        android:id="@+id/joinedtext"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <!-- Device Tag -->
+
+    <TextView
+        android:id="@+id/devicetag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <!-- Device Text -->
+
+    <TextView
+        android:id="@+id/devicetext"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <!-- Model Tag -->
+
+    <TextView
+        android:id="@+id/modeltag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <!-- Model Text -->
+
+    <TextView
+        android:id="@+id/modeltext"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <!-- Bio Tag -->
+
+    <TextView
+        android:id="@+id/biotag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <!-- Bio Text -->
+
+    <TextView
+        android:id="@+id/biotext"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
