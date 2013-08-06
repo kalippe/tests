@@ -50,7 +50,7 @@ public class MainActivity extends ListActivity {
 		String get = get();
 		try {
 			JSONObject getJsonObject = new JSONObject(get);
-			Log.i(MainActivity.class.getName(), get);
+			// Log.i(MainActivity.class.getName(), get);
 			String key = getJsonObject.getString("key");
 			Log.i(MainActivity.class.getName(), key);
 
@@ -67,16 +67,18 @@ public class MainActivity extends ListActivity {
 								.getString("device"), entryJSONObject
 								.getString("model"), entryJSONObject
 								.getString("bio")));
-				Log.i(MainActivity.class.getName(),
-						entryJSONObject.getString("name"));
-				Log.i(MainActivity.class.getName(),
-						entryJSONObject.getString("joined"));
-				Log.i(MainActivity.class.getName(),
-						entryJSONObject.getString("device"));
-				Log.i(MainActivity.class.getName(),
-						entryJSONObject.getString("model"));
-				Log.i(MainActivity.class.getName(),
-						entryJSONObject.getString("bio"));
+				/*
+				 * Log.i(MainActivity.class.getName(),
+				 * entryJSONObject.getString("name"));
+				 * Log.i(MainActivity.class.getName(),
+				 * entryJSONObject.getString("joined"));
+				 * Log.i(MainActivity.class.getName(),
+				 * entryJSONObject.getString("device"));
+				 * Log.i(MainActivity.class.getName(),
+				 * entryJSONObject.getString("model"));
+				 * Log.i(MainActivity.class.getName(),
+				 * entryJSONObject.getString("bio"));
+				 */
 			}
 			Log.i(MainActivity.class.getName(), post);
 		} catch (Exception e) {
