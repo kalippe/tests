@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -69,9 +69,10 @@ public class MainActivity extends ListActivity {
 				String date = dateFormat.format(dateParse);
 
 				// Device & Model Concatenation
-				entriesArrayList.add(new ListEntry(entry.getString("name"), ""
-						+ date, entry.getString("device") + " "
-						+ entry.getString("model"), entry.getString("bio")));
+				entriesArrayList.add(new ListEntry(entry.getString("name"),
+						date, entry.getString("device") + " "
+								+ entry.getString("model"), entry
+								.getString("bio")));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
