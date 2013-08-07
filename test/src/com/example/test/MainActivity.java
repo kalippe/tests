@@ -5,8 +5,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -27,12 +30,9 @@ import android.os.StrictMode;
 import android.util.Log;
 
 public class MainActivity extends ListActivity {
-	// References:
-	// http://www.edumobile.org/android/android-development/json-example-in-android/
-	// http://devtut.wordpress.com/2011/06/09/custom-arrayadapter-for-a-listview-android/
 
-	private ArrayList<ListItem> entries = new ArrayList<ListItem>();
-	private ItemAdapter itemAdapter;
+	private ArrayList<ListEntry> entriesArrayList = new ArrayList<ListEntry>();
+	private ListAdapter entriesAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -44,43 +44,35 @@ public class MainActivity extends ListActivity {
 				.detectDiskReads().detectDiskWrites().detectNetwork()
 				.penaltyLog().build());
 
-		itemAdapter = new ItemAdapter(this, R.layout.list_item, entries);
-		setListAdapter(itemAdapter);
+		entriesAdapter = new ListAdapter(this, R.layout.list_entry,
+				entriesArrayList);
+		setListAdapter(entriesAdapter);
 
 		String get = get();
 		try {
-			JSONObject getJsonObject = new JSONObject(get);
-			// Log.i(MainActivity.class.getName(), get);
-			String key = getJsonObject.getString("key");
-			Log.i(MainActivity.class.getName(), key);
+			JSONObject getKey = new JSONObject(get);
+			String key = getKey.getString("key");
 
 			String post = post(key);
-			JSONObject postJSONObject = new JSONObject(post);
-			JSONArray postJSONArray = postJSONObject.getJSONArray("members");
+			JSONObject postKey = new JSONObject(post);
+			JSONArray getEntriesArray = postKey.getJSONArray("members");
 
-			Log.i(MainActivity.class.getName(),
-					"Entries: " + postJSONArray.length());
-			for (int i = 0; i < postJSONArray.length(); i++) {
-				JSONObject entryJSONObject = postJSONArray.getJSONObject(i);
-				entries.add(new ListItem(entryJSONObject.getString("name"),
-						entryJSONObject.getString("joined"), entryJSONObject
-								.getString("device"), entryJSONObject
-								.getString("model"), entryJSONObject
-								.getString("bio")));
-				/*
-				 * Log.i(MainActivity.class.getName(),
-				 * entryJSONObject.getString("name"));
-				 * Log.i(MainActivity.class.getName(),
-				 * entryJSONObject.getString("joined"));
-				 * Log.i(MainActivity.class.getName(),
-				 * entryJSONObject.getString("device"));
-				 * Log.i(MainActivity.class.getName(),
-				 * entryJSONObject.getString("model"));
-				 * Log.i(MainActivity.class.getName(),
-				 * entryJSONObject.getString("bio"));
-				 */
+			for (int i = 0; i < getEntriesArray.length(); i++) {
+				JSONObject entry = getEntriesArray.getJSONObject(i);
+
+				// Date Formatting
+				// TODO: Incorporate Other Regions
+				SimpleDateFormat dateFormat = new SimpleDateFormat(
+						"yyyy-MM-dd", Locale.US);
+				Date dateParse = new Date(Integer.parseInt(entry
+						.getString("joined")));
+				String date = dateFormat.format(dateParse);
+
+				// Device & Model Concatenation
+				entriesArrayList.add(new ListEntry(entry.getString("name"), ""
+						+ date, entry.getString("device") + " "
+						+ entry.getString("model"), entry.getString("bio")));
 			}
-			Log.i(MainActivity.class.getName(), post);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -91,6 +83,7 @@ public class MainActivity extends ListActivity {
 		HttpClient client = new DefaultHttpClient();
 
 		try {
+			// Key/pair 'u/kwalker' added to URL with '?' for query
 			HttpGet httpGet = new HttpGet(
 					"http://test.devicevault.net/request.init/?u=kwalker");
 			HttpResponse response = client.execute(httpGet);
@@ -123,12 +116,12 @@ public class MainActivity extends ListActivity {
 			HttpPost httppost = new HttpPost(
 					"http://test.devicevault.net/request.generate");
 
+			// Key encoded with URL for post
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 			nameValuePairs.add(new BasicNameValuePair("key", key));
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
 			HttpResponse response = httpclient.execute(httppost);
-
 			if (response.getStatusLine().getStatusCode() == 200) {
 				HttpEntity entity = response.getEntity();
 				InputStream content = entity.getContent();
@@ -138,8 +131,6 @@ public class MainActivity extends ListActivity {
 				while ((line = reader.readLine()) != null) {
 					builder.append(line);
 				}
-				// Verify Response: Log.i(JSONParser.class.getName(),
-				// EntityUtils.toString(entity));
 			} else {
 				Log.e(MainActivity.class.toString(), "Post Failed!");
 			}
